@@ -31,7 +31,7 @@ import org.apache.twill.internal.utils.Instances;
 public abstract class HBaseVersionSpecificFactory<T> implements Provider<T> {
   @Override
   public T get() {
-    T instance;
+    T instance = null;
     try {
       switch (HBaseVersion.get()) {
         case HBASE_94:
@@ -52,14 +52,7 @@ public abstract class HBaseVersionSpecificFactory<T> implements Provider<T> {
         case HBASE_12:
           instance = createInstance(getHBase11Classname());
           break;
-        case HBASE_13:
-          instance = createInstance(getHBase13Classname());
-          break;
-        case HBASE_14:
-          instance = createInstance(getHBase14Classname());
-          break;
         case UNKNOWN:
-        default:
           throw new ProvisionException("Unknown HBase version: " + HBaseVersion.getVersionString());
       }
     } catch (ClassNotFoundException cnfe) {
@@ -78,6 +71,4 @@ public abstract class HBaseVersionSpecificFactory<T> implements Provider<T> {
   protected abstract String getHBase10Classname();
   protected abstract String getHBase10CDHClassname();
   protected abstract String getHBase11Classname();
-  protected abstract String getHBase13Classname();
-  protected abstract String getHBase14Classname();
 }
